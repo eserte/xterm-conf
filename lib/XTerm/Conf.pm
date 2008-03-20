@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.3 2008/03/20 23:08:15 eserte Exp $
+# $Id: Conf.pm,v 1.4 2008/03/20 23:26:41 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -287,6 +287,219 @@ XTerm::Conf - change configuration of a running xterm
 
     use XTerm::Conf;
     xterm_conf(-fg => "white", -bg => "black", -title => "Hello, world", ...);
+
+=head1 DESCRIPTION
+
+=head2 OPTIONS
+
+=over
+
+=item -iconname string
+
+Change the name of the associated X11 icon.
+
+=item -title string
+
+Change the xterm's title bar.
+
+=item -fg color
+
+=item -foreground color
+
+Change the text color. You can use either X11 named colors or the
+#rrggbb notation.
+
+=item -bg color
+
+=item -background color
+
+Change the background color
+
+=item -textcursor ...
+
+???
+
+=item -mousefg color
+
+=item -mouseforeground color
+
+Change the foreground color of the mouse pointer.
+
+=item -mousebg color
+
+=item -mousebackground color
+
+Change the background/border color of the mouse pointer.
+
+=item -tekfg color
+
+=item -tekforeground color
+
+???
+
+=item -tekbg color
+
+=item -tekbackground color
+
+???
+
+=item -highlightcolor color
+
+???
+
+=item -bell
+
+Ring the bell (either visual or audible)
+
+=item -cs ...
+
+???
+
+=item -fullreset
+
+Perform a full reset.
+
+=item -softreset
+
+Perform a soft reset.
+
+=item -[no]smoothscroll
+
+Turn smooth scrolling on or off. Does not have a visual effect,
+though.
+
+=item -[no]reverse
+
+=item -[no]reversevideo
+
+Turn reverse video on or off.
+
+=item -[no]origin
+
+???
+
+=item -[no]wraparound
+
+???
+
+=item -[no]autorepeat
+
+Turn auto repeat on or off
+
+=item -[no]formfeed
+
+???
+
+=item -[no]showcursor
+
+???
+
+=item -[no]showscrollbar
+
+rxvt only?
+
+=item -[no]tektronix
+
+???
+
+=item -[no]marginbell
+
+???
+
+=item -[no]reversewraparound
+
+???
+
+=item -[no]backsendsdelete
+
+???
+
+=item -[no]bottomscrolltty
+
+rxvt only?
+
+=item -[no]bottomscrollkey
+
+rxvt only?
+
+=item -[no]metasendsesc
+
+=item -[no]metasendsescape
+
+???
+
+=item -scrollregion ...
+
+???
+
+=item -deiconify
+
+Deiconify an iconified xterm window.
+
+=item -iconify
+
+Iconify the xterm window.
+
+=item -geometry geomtry
+
+Change the geometry of the xterm window. The geometry is in the usual
+X11 notation I<width>xI<height>+I<left>+I<top>. The numbers are in
+pixels. The width and height may be suffixed with a C<c>, which means
+that the number are interpreted as characters.
+
+=item -raise
+
+Raise the xterm window.
+
+=item -lower
+
+Lower the xterm window
+
+=item -refresh
+
+=item -x11refresh
+
+Force a X11 refresh
+
+=item -maximize
+
+Maximize the xterm window
+
+=item -unmaximize
+
+Restore to the state before maximization.
+
+=item -xproperty ...
+
+=item -x11property ...
+
+???
+
+=item -font ...
+
+???
+
+=item -nextfont
+
+???
+
+=item -prevfont
+
+???
+
+=item -report ...
+
+???
+
+=item -debugreport
+
+???
+
+=item -resize integer
+
+???
+
+=back
 
 =head1 AUTHOR
 
