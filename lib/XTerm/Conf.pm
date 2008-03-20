@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.1 2008/03/20 23:03:46 eserte Exp $
+# $Id: Conf.pm,v 1.2 2008/03/20 23:05:48 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -244,7 +244,7 @@ sub _report ($$) {
 
     my $debug = $o{debugreport};
 
-    open my $TTY, "+<", "/dev/tty" or die "Cannot open terminal: $!";
+    open my $TTY, "+< /dev/tty" or die "Cannot open terminal /dev/tty: $!";
     syswrite $TTY, $cmd;
     my $res = "";
     my @args;
