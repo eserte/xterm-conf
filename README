@@ -1,7 +1,8 @@
 XTerm-Conf
 ============
 
-XXX
+Change the xterm configuration like colors, size, fonts etc. within a
+running xterm.
 
 INSTALLATION
 
@@ -15,6 +16,17 @@ Otherwise use
 	make
 	make test
 	make install
+
+SCRIPT USAGE
+
+    xterm-conf options
+
+See the documentation for a complete list of options.
+
+MODULE USAGE
+
+    use XTerm::Config;
+    xterm_conf(-key => val ...)
 
 SUPPORT AND DOCUMENTATION
 
