@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.4 2008/03/20 23:26:41 eserte Exp $
+# $Id: Conf.pm,v 1.5 2008/03/20 23:26:56 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -20,7 +20,7 @@ package XTerm::Conf;
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.01';
+$VERSION = '0.00_50';
 
 require Exporter;
 @ISA = qw(Exporter);
