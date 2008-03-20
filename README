@@ -1,4 +1,4 @@
-XTerm-Config
+XTerm-Conf
 ============
 
 XXX
@@ -26,16 +26,16 @@ perldoc command.
 You can also look for information at:
 
     RT, CPAN's request tracker
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=XTerm-Config
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=XTerm-Conf
 
     AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/XTerm-Config
+        http://annocpan.org/dist/XTerm-Conf
 
     CPAN Ratings
-        http://cpanratings.perl.org/d/XTerm-Config
+        http://cpanratings.perl.org/d/XTerm-Conf
 
     Search CPAN
-        http://search.cpan.org/dist/XTerm-Config
+        http://search.cpan.org/dist/XTerm-Conf
 
 
 COPYRIGHT AND LICENCE

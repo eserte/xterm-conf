@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.2 2008/03/20 23:05:48 eserte Exp $
+# $Id: Conf.pm,v 1.3 2008/03/20 23:08:15 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -12,7 +12,7 @@
 # WWW:  http://www.rezic.de/eserte/
 #
 
-package XTerm::Config;
+package XTerm::Conf;
 
 # Plethora of xterm control sequences:
 # http://rtfm.etla.org/xterm/ctlseq.html
@@ -24,8 +24,8 @@ $VERSION = '0.01';
 
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT    = qw(xterm_config);
-@EXPORT_OK = qw(xterm_config_string);
+@EXPORT    = qw(xterm_conf);
+@EXPORT_OK = qw(xterm_conf_string);
 
 use Getopt::Long;
 
@@ -68,7 +68,7 @@ use constant APC_8   => chr 0x9f;
 my %o;
 my $need_reset_terminal;
 
-sub xterm_config_string {
+sub xterm_conf_string {
     local @ARGV = @_;
 
     %o = ();
@@ -231,8 +231,8 @@ sub xterm_config_string {
     $rv;
 }
 
-sub xterm_config {
-    my $rv = xterm_config_string(@_);
+sub xterm_conf {
+    my $rv = xterm_conf_string(@_);
     print $rv;
 }
 
@@ -275,18 +275,18 @@ END {
 
 return 1 if caller;
 
-xterm_config(@ARGV);
+xterm_conf(@ARGV);
 
 __END__
 
 =head1 NAME
 
-XTerm::Config - change configuration of a running xterm
+XTerm::Conf - change configuration of a running xterm
 
 =head1 SYNOPSIS
 
-    use XTerm::Config;
-    xterm_config(-fg => "white", -bg => "black", -title => "Hello, world", ...);
+    use XTerm::Conf;
+    xterm_conf(-fg => "white", -bg => "black", -title => "Hello, world", ...);
 
 =head1 AUTHOR
 

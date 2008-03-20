@@ -2,6 +2,6 @@ Changes
 MANIFEST
 Makefile.PL
 README
-lib/XTerm/Config.pm
+lib/XTerm/Conf.pm
 t/00-load.t
-xterm-config
+xterm-conf
