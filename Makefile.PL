@@ -1,6 +1,8 @@
 use 5.000;
 use ExtUtils::MakeMaker;
 
+$is_devel_host = defined $ENV{USER} && $ENV{USER} eq 'eserte' && $^O =~ /bsd/i && -f "../../perl.release.mk";
+
 WriteMakefile(
     NAME                => 'XTerm::Conf',
     VERSION_FROM        => 'lib/XTerm/Conf.pm',
@@ -13,3 +15,18 @@ WriteMakefile(
 	(AUTHOR              => 'Slaven Rezic <srezic@cpan.org>',
 	 ABSTRACT_FROM       => 'lib/XTerm/Conf.pm') : ()),
 );
+
+sub MY::postamble {
+    my $postamble = '';
+
+    if ($is_devel_host) {
+	$postamble .= <<'EOF';
+
+.include "../../perl.release.mk"
+.include "../../perl.cvs.mk"
+
+EOF
+    }
+
+    $postamble;
+}
