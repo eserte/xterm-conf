@@ -1,4 +1,4 @@
-use 5.000;
+use 5.005;
 use ExtUtils::MakeMaker;
 
 $is_devel_host = defined $ENV{USER} && $ENV{USER} eq 'eserte' && $^O =~ /bsd/i && -f "../../perl.release.mk";

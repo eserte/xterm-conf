@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.5 2008/03/20 23:26:56 eserte Exp $
+# $Id: Conf.pm,v 1.6 2008/03/27 01:17:13 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -13,6 +13,8 @@
 #
 
 package XTerm::Conf;
+
+use 5.005; # qr
 
 # Plethora of xterm control sequences:
 # http://rtfm.etla.org/xterm/ctlseq.html
