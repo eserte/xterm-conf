@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.6 2008/03/27 01:17:13 eserte Exp $
+# $Id: Conf.pm,v 1.7 2008/04/09 18:59:06 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -22,7 +22,7 @@ use 5.005; # qr
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.00_50';
+$VERSION = '0.00_51';
 
 require Exporter;
 @ISA = qw(Exporter);
@@ -234,7 +234,10 @@ sub xterm_conf_string {
 }
 
 sub xterm_conf {
+    return if !$ENV{TERM};
+    return if $ENV{TERM} !~ m{^xterm};
     my $rv = xterm_conf_string(@_);
+    local $| = 1;
     print $rv;
 }
 
@@ -292,7 +295,12 @@ XTerm::Conf - change configuration of a running xterm
 
 =head1 DESCRIPTION
 
-=head2 OPTIONS
+=head2 xterm_conf(I<options ...>)
+
+The xterm_conf function (exported by default) checks first if the
+current terminal looks like an xterm (by looking at the C<TERM>
+environment variable) and prints the escape sequences for the
+following options:
 
 =over
 
@@ -502,6 +510,14 @@ Restore to the state before maximization.
 ???
 
 =back
+
+=head2 xterm_conf_string(I<options ...>)
+
+xterm_conf_string just returns a string with the escape sequences for
+the given options (same as in xterm_conf). No terminal check will be
+performed here.
+
+xterm_conf_string may be exported.
 
 =head1 AUTHOR
 
