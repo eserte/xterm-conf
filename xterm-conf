@@ -1,4 +1,16 @@
 #!/usr/bin/perl
 
-use XTerm::Conf;
-xterm_conf(@ARGV);
+use strict;
+use Getopt::Long;
+use XTerm::Conf qw(xterm_conf xterm_conf_string);
+
+my $f;
+my $p = Getopt::Long::Parser->new;
+$p->configure('pass_through');
+$p->getoptions("f|force!" => \$f);
+
+if ($f) {
+    print xterm_conf_string(@ARGV);
+} else {
+    xterm_conf(@ARGV);
+}
