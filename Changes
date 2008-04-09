@@ -1,5 +1,12 @@
 Revision history for XTerm-Conf
 
+0.00_51
+	xterm-conf has now a -f (force) option.
+
+	xterm_conf() checks for TERM=xterm.
+
+	More live tests.
+
 0.00_50
         First version, released on an unsuspecting world.
 
