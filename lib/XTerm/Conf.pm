@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.7 2008/04/09 18:59:06 eserte Exp $
+# $Id: Conf.pm,v 1.8 2008/07/21 06:40:10 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -22,7 +22,7 @@ use 5.005; # qr
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.00_51';
+$VERSION = '0.01';
 
 require Exporter;
 @ISA = qw(Exporter);
