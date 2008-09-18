@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.9 2008/09/18 20:03:03 eserte Exp $
+# $Id: Conf.pm,v 1.10 2008/09/18 20:50:13 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -29,7 +29,7 @@ require Exporter;
 @EXPORT    = qw(xterm_conf);
 @EXPORT_OK = qw(xterm_conf_string);
 
-use Getopt::Long;
+use Getopt::Long 2.24; # OO interface
 
 use constant BEL => "";
 use constant ESC => "";
@@ -76,17 +76,19 @@ sub xterm_conf_string {
     %o = ();
     $need_reset_terminal++;
 
-    GetOptions(\%o,
-	       "iconname=s",
-	       "title=s",
+    my $p = Getopt::Long::Parser->new;
+    $p->configure('no_ignore_case');
+    $p->getoptions(\%o,
+	       "iconname|n=s",
+	       "title|T=s",
 	       "fg|foreground=s",
 	       "bg|background=s",
-	       "textcursor=s",
-	       "mousefg|mouseforeground=s",
+	       "textcursor|cr=s",
+	       "mousefg|mouseforeground|ms=s",
 	       "mousebg|mousebackground=s",
 	       "tekfg|tekforeground=s",
 	       "tekbg|tekbackground=s",
-	       "highlightcolor=s",
+	       "highlightcolor|hc=s",
 	       "bell",
 	       "cs=s",
 	       "fullreset",
@@ -270,16 +272,16 @@ sub _report_windowpos   { _report CSI.'13t', qr{;(\d+);(\d+)t} }
 sub _report_geometry    { _report CSI.'14t', qr{;(\d+);(\d+)t} }
 sub _report_cgeometry   { _report CSI.'18t', qr{;(\d+);(\d+)t} }
 sub _report_cscreengeom { _report CSI.'19t', qr{;(\d+);(\d+)t} }
-sub _report_iconlabel   { _report CSI.'20t', qr{L(.*?)(?:\Q@{[ST]}\E|\Q@{[ST_8]}\E)} }
+sub _report_iconname    { _report CSI.'20t', qr{L(.*?)(?:\Q@{[ST]}\E|\Q@{[ST_8]}\E)} }
 sub _report_title       { _report CSI.'21t', qr{l(.*?)(?:\Q@{[ST]}\E|\Q@{[ST_8]}\E)} }
 
 sub _usage {
     die <<EOF;
-usage: $0 [-iconname string] [-title string] [-textcursor]
+usage: $0 [-n|iconname string] [-T|title string] [-cr|textcursor color]
         [-fg|-foreground color] [-bg|-background color color]
-        [-mousefg|-mouseforeground color] [-mousebg|-mousebackground color]
+        [-ms|mousefg|-mouseforeground color] [-mousebg|-mousebackground color]
         [-tekfg|-tekforeground color] [-tekbg|-tekbackground color]
-        [-highlightcolor color] [-bell] [-cs ...] [-fullreset] [-softreset]
+        [-hc|highlightcolor color] [-bell] [-cs ...] [-fullreset] [-softreset]
 	[-[no]smoothscroll] [-[no]reverse|reversevideo], [-[no]origin]
 	[-[no]wraparound] [-[no]autorepeat] [-[no]formfeed] [-[no]showcursor]
         [-[no]showscrollbar] [-[no]tektronix] [-[no]marginbell]
@@ -325,30 +327,38 @@ following options:
 
 =over
 
+=item -n string
+
 =item -iconname string
 
-Change the name of the associated X11 icon.
+Change name of the associated X11 icon.
+
+=item -T string
 
 =item -title string
 
-Change the xterm's title bar.
+Change xterm's title name.
 
 =item -fg color
 
 =item -foreground color
 
-Change the text color. You can use either X11 named colors or the
+Change text color. You can use either X11 named colors or the
 #rrggbb notation.
 
 =item -bg color
 
 =item -background color
 
-Change the background color
+Change background color
+
+=item -cr ...
 
 =item -textcursor ...
 
-???
+Change cursor color
+
+=item -ms color
 
 =item -mousefg color
 
@@ -366,25 +376,25 @@ Change the background/border color of the mouse pointer.
 
 =item -tekforeground color
 
-???
+Change foreground color of Tek window.
 
 =item -tekbg color
 
 =item -tekbackground color
 
-???
+Change background color of Tek window.
 
 =item -highlightcolor color
 
-???
+Change selection background color.
 
 =item -bell
 
 Ring the bell (either visual or audible)
 
-=item -cs ...
+=item -cs utf-8|iso-8859-1
 
-???
+Switch charset. Valid values are C<utf-8> and C<iso-8859-1>.
 
 =item -fullreset
 
@@ -396,8 +406,8 @@ Perform a soft reset.
 
 =item -[no]smoothscroll
 
-Turn smooth scrolling on or off. Does not have a visual effect,
-though.
+Turn smooth scrolling on or off (which is probably the opposite of
+jump scroll, see L<xterm(1)>).
 
 =item -[no]reverse
 
@@ -423,7 +433,7 @@ Turn auto repeat on or off
 
 =item -[no]showcursor
 
-???
+Show or hide the cursor.
 
 =item -[no]showscrollbar
 
@@ -431,7 +441,8 @@ rxvt only?
 
 =item -[no]tektronix
 
-???
+Show the Tek window and switch to Tek mode (XXX -notektronix does not
+seem to work).
 
 =item -[no]marginbell
 
@@ -506,21 +517,58 @@ Restore to the state before maximization.
 
 ???
 
-=item -font ...
+=item -font number
 
-???
+Change font. Number may be from 0 (default font) to 6 (usually the
+largest font, but this could be changed using Xdefaults).
 
 =item -nextfont
 
-???
+Use the next font in list.
 
 =item -prevfont
 
+Use the previous font in ilist.
+
+=item -report what
+
+Report to STDOUT:
+
+=over
+
+=item status
+
 ???
 
-=item -report ...
+=item cursorpos
+
+The cursor position (I<line column>).
+
+=item windowpos
+
+The XTerm window position (I<x y>).
+
+=item geometry
+
+The geometry of the window in pixels (I<width> I<height>).
+
+=item cgeometry
+
+The geometry of the window in characters (I<width>C<x>I<height>).
+
+=item cscreengeom
 
 ???
+
+=item iconname
+
+The icon name.
+
+=item title
+
+The title name.
+
+=back
 
 =item -debugreport
 
@@ -546,6 +594,6 @@ Slaven ReziE<0x107>
 
 =head1 SEE ALSO
 
-L<Term::Title>, L<xterm(1)>.
+L<xterm(1)>, L<Term::Title>.
 
 =cut
