@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.10 2008/09/18 20:50:13 eserte Exp $
+# $Id: Conf.pm,v 1.11 2008/09/18 21:44:51 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -594,6 +594,6 @@ Slaven ReziE<0x107>
 
 =head1 SEE ALSO
 
-L<xterm(1)>, L<Term::Title>.
+L<xterm-conf>, L<xterm(1)>, L<Term::Title>.
 
 =cut
