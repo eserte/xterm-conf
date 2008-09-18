@@ -2,7 +2,7 @@
 # -*- perl -*-
 
 #
-# $Id: 10-xterm.t,v 1.1 2008/04/09 18:58:29 eserte Exp $
+# $Id: 10-xterm.t,v 1.2 2008/09/18 20:48:59 eserte Exp $
 # Author: Slaven Rezic
 #
 
@@ -33,7 +33,7 @@ SKIP: {
 
     open FH, "< $file"
 	or die "Can't open $file: $!";
-    chomp(my $success = <FH>);
+    chomp(my $success = join "", <FH>);
     is($success, "success", "live xterm tests");
 }
 
