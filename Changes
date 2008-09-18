@@ -1,5 +1,16 @@
 Revision history for XTerm-Conf
 
+0.02
+	introduced some xterm-like short option variants
+
+	better usage
+
+	more options documented in Pod
+
+0.01
+	public release
+
+
 0.00_51
 	xterm-conf has now a -f (force) option.
 
