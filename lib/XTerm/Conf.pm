@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.8 2008/07/21 06:40:10 eserte Exp $
+# $Id: Conf.pm,v 1.9 2008/09/18 20:03:03 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -22,7 +22,7 @@ use 5.005; # qr
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 require Exporter;
 @ISA = qw(Exporter);
@@ -123,8 +123,8 @@ sub xterm_conf_string {
 	       "debugreport",
 	       "resize=i",
 	      )
-	or die "usage?";
-    die "usage?" if (@ARGV);
+	or _usage();
+    die _usage() if (@ARGV);
 
     my $rv = "";
 
@@ -272,6 +272,27 @@ sub _report_cgeometry   { _report CSI.'18t', qr{;(\d+);(\d+)t} }
 sub _report_cscreengeom { _report CSI.'19t', qr{;(\d+);(\d+)t} }
 sub _report_iconlabel   { _report CSI.'20t', qr{L(.*?)(?:\Q@{[ST]}\E|\Q@{[ST_8]}\E)} }
 sub _report_title       { _report CSI.'21t', qr{l(.*?)(?:\Q@{[ST]}\E|\Q@{[ST_8]}\E)} }
+
+sub _usage {
+    die <<EOF;
+usage: $0 [-iconname string] [-title string] [-textcursor]
+        [-fg|-foreground color] [-bg|-background color color]
+        [-mousefg|-mouseforeground color] [-mousebg|-mousebackground color]
+        [-tekfg|-tekforeground color] [-tekbg|-tekbackground color]
+        [-highlightcolor color] [-bell] [-cs ...] [-fullreset] [-softreset]
+	[-[no]smoothscroll] [-[no]reverse|reversevideo], [-[no]origin]
+	[-[no]wraparound] [-[no]autorepeat] [-[no]formfeed] [-[no]showcursor]
+        [-[no]showscrollbar] [-[no]tektronix] [-[no]marginbell]
+	[-[no]reversewraparound] [-[no]backsendsdelete]
+        [-[no]bottomscrolltty] [-[no]bottomscrollkey]
+	[-[no]metasendsesc|metasendsescape] [-scrollregion ...]
+	[-deiconify] [-iconify] [-geometry x11geom] [-raise] [-lower]
+	[-refresh|x11refresh] [-maximize] [-unmaximize]
+	[-xproperty|x11property ...] [-font ...] [-nextfont] [-prevfont]
+	[-report ...] [-debugreport] [-resize ...]
+
+EOF
+}
 
 END {
     Term::ReadKey::ReadMode(0)
