@@ -2,7 +2,7 @@
 # -*- perl -*-
 
 #
-# $Id: 10-xterm.pl,v 1.1 2008/04/09 18:58:26 eserte Exp $
+# $Id: 10-xterm.pl,v 1.2 2008/09/18 20:48:40 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2008 Slaven Rezic. All rights reserved.
@@ -15,7 +15,9 @@
 
 use FindBin;
 use blib "$FindBin::RealBin/..";
-use XTerm::Conf;
+use XTerm::Conf qw(xterm_conf xterm_conf_string);
+use Data::Dumper qw(Dumper);
+use Test::More qw(no_plan);
 
 sub S () { select undef, undef, undef, 0.4 }
 
@@ -23,8 +25,17 @@ my $file = shift;
 
 print STDERR "Some text for the xterm...\n";
 eval {
+    # This test has to be the first one, right after the print above!
+    is(xterm_conf_string(-report => 'cursorpos'), "2 1\n", "cursor position");
+    
     xterm_conf(-title => "Title changed");
     S;
+    is(xterm_conf_string(-report => 'title'), "Title changed\n", "report of title");
+
+    xterm_conf(-iconname => "Iconname changed");
+    S;
+    is(xterm_conf_string(-report => 'iconname'), "Iconname changed\n", "report of iconname");
+    
     xterm_conf(-fg => 'blue', -bg => 'white',
 	       -title => "Foreground and background colors changed",
 	      );
@@ -60,6 +71,8 @@ open FH, "> $file"
     or die "Can't write to $file: $!";
 if ($err) {
     print FH "error: $err\n";
+} elsif (!grep { $_ } Test::More->builder->summary) {
+    print FH "error: tests failed: " . Dumper(Test::More->builder->details) . "\n";
 } else {
     print FH "success\n";
 }
