@@ -1,5 +1,8 @@
 Revision history for XTerm-Conf
 
+0.03
+	Pod for the script xterm-conf
+
 0.02
 	introduced some xterm-like short option variants
 
