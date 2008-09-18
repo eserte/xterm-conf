@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 use strict;
-use Getopt::Long;
+use Getopt::Long 2.24; # OO style
 use XTerm::Conf qw(xterm_conf xterm_conf_string);
 
 my $f;
@@ -14,3 +14,29 @@ if ($f) {
 } else {
     xterm_conf(@ARGV);
 }
+
+=head1 NAME
+
+xterm-conf - change configuration of a running xterm
+
+=head1 SYNOPSIS
+
+    xterm-conf [-f|force] [options]
+
+=head1 DESCRIPTION
+
+See L<XTerm::Conf> for a complete option list.
+
+Additionaly, B<xterm-conf> supports the B<-f> option to force a
+terminal configuration change without checking the C<TERM> environment
+variable before.
+
+=head1 AUTHOR
+
+Slaven ReziE<0x0107>
+
+=head1 SEE ALSO
+
+L<XTerm::Conf>.
+
+=cut
