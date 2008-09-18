@@ -8,7 +8,7 @@ WriteMakefile(
     VERSION_FROM        => 'lib/XTerm/Conf.pm',
     EXE_FILES           => ['xterm-conf'],
     PREREQ_PM		=> {
-	'Getopt::Long'  => 0,
+	'Getopt::Long'  => 2.24,
 	'Term::ReadKey' => 0,
     },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
