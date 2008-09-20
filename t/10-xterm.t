@@ -2,7 +2,7 @@
 # -*- perl -*-
 
 #
-# $Id: 10-xterm.t,v 1.2 2008/09/18 20:48:59 eserte Exp $
+# $Id: 10-xterm.t,v 1.3 2008/09/20 07:01:52 eserte Exp $
 # Author: Slaven Rezic
 #
 
@@ -28,6 +28,10 @@ my(undef,$file) = tempfile(UNLINK => 1);
 SKIP: {
     skip("No xterm and/or DISPLAY on this system available", $tests)
 	if (!is_in_path("xterm") || !$ENV{DISPLAY});
+
+    system("xterm", "-e", $^X, "-e", q{print STDERR "# xterm can be started\n"});
+    skip("Cannot start xterm", $tests)
+	if $? != 0;
 
     system("xterm", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file);
 
