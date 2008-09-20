@@ -1,5 +1,8 @@
 Revision history for XTerm-Conf
 
+0.04
+	test fix: check if xterm can be started at all
+
 0.03
 	Pod for the script xterm-conf
 
