@@ -2,7 +2,7 @@
 # -*- perl -*-
 
 #
-# $Id: 10-xterm.t,v 1.3 2008/09/20 07:01:52 eserte Exp $
+# $Id: 10-xterm.t,v 1.4 2008/09/30 20:00:38 eserte Exp $
 # Author: Slaven Rezic
 #
 
@@ -32,6 +32,9 @@ SKIP: {
     system("xterm", "-e", $^X, "-e", q{print STDERR "# xterm can be started\n"});
     skip("Cannot start xterm", $tests)
 	if $? != 0;
+
+    my $xterm_version = `xterm -v`;
+    diag("\nxterm version $xterm_version");
 
     system("xterm", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file);
 
