@@ -1,7 +1,7 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.13 2008/09/20 07:02:24 eserte Exp $
+# $Id: Conf.pm,v 1.14 2008/10/01 21:22:46 eserte Exp $
 # Author: Slaven Rezic
 #
 # Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
@@ -249,13 +249,25 @@ sub _report ($$) {
     require Term::ReadKey;
     Term::ReadKey::ReadMode(5);
 
+    require IO::Select;
+
     my $debug = $o{debugreport};
 
     open my $TTY, "+< /dev/tty" or die "Cannot open terminal /dev/tty: $!";
     syswrite $TTY, $cmd;
+
+    my $sel = IO::Select->new;
+    $sel->add($TTY);
+
     my $res = "";
     my @args;
+    my $err;
     while() {
+	my(@ready) = $sel->can_read(5);
+	if (!@ready) {
+	    $err = "Cannot report, maybe allowWindowOps is set to false?";
+	    last;
+	}
 	sysread $TTY, my $ch, 1 or die "Cannot sysread: $!";
 	print STDERR ord($ch)." " if $debug;
 	$res .= $ch;
@@ -263,6 +275,10 @@ sub _report ($$) {
     }
 
     Term::ReadKey::ReadMode(0);
+
+    if ($err) {
+	die "$err\n";
+    }
     @args;
 }
 
