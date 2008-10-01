@@ -6,4 +6,5 @@ lib/XTerm/Conf.pm
 t/00-load.t
 t/10-xterm.pl
 t/10-xterm.t
+t/11-xterm.pl
 xterm-conf
