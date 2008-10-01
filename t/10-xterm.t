@@ -2,7 +2,7 @@
 # -*- perl -*-
 
 #
-# $Id: 10-xterm.t,v 1.4 2008/09/30 20:00:38 eserte Exp $
+# $Id: 10-xterm.t,v 1.5 2008/10/01 21:23:14 eserte Exp $
 # Author: Slaven Rezic
 #
 
@@ -20,7 +20,7 @@ BEGIN {
     }
 }
 
-my $tests = 1;
+my $tests = 2;
 plan tests => $tests;
 
 my(undef,$file) = tempfile(UNLINK => 1);
@@ -36,12 +36,16 @@ SKIP: {
     my $xterm_version = `xterm -v`;
     diag("\nxterm version $xterm_version");
 
-    system("xterm", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file);
+    system("xterm", "-xrm", "*allowWindowOps:true", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file);
 
     open FH, "< $file"
 	or die "Can't open $file: $!";
     chomp(my $success = join "", <FH>);
     is($success, "success", "live xterm tests");
+
+    system("xterm", "-xrm", "*allowWindowOps:false", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/11-xterm.pl", $file);
+    pass("No hangs if xterm is running with allowWindowOps:false");
+
 }
 
 # REPO BEGIN
