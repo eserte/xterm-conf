@@ -1,5 +1,9 @@
 Revision history for XTerm-Conf
 
+0.05
+	fix: report may hang if xterm is setup with
+	allowWindowOps:false
+
 0.04
 	test fix: check if xterm can be started at all
 
