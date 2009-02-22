@@ -1,5 +1,8 @@
 Revision history for XTerm-Conf
 
+0.06
+	increased perl prerequisite to 5.006
+
 0.05
 	fix: report may hang if xterm is setup with
 	allowWindowOps:false
