@@ -7,7 +7,11 @@ use XTerm::Conf qw(xterm_conf xterm_conf_string);
 my $f;
 my $p = Getopt::Long::Parser->new;
 $p->configure('pass_through');
-$p->getoptions("f|force!" => \$f);
+$p->getoptions("f|force!" => \$f
+	       "version" => sub {
+		   print "XTerm::Conf version $XTerm::Conf::VERSION\n";
+	       },
+	      );
 
 if ($f) {
     print xterm_conf_string(@ARGV);
