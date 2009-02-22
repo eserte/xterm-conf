@@ -1,10 +1,10 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.15 2008/10/01 21:25:54 eserte Exp $
+# $Id: Conf.pm,v 1.16 2009/02/22 12:27:16 eserte Exp $
 # Author: Slaven Rezic
 #
-# Copyright (C) 2006,2008 Slaven Rezic. All rights reserved.
+# Copyright (C) 2006,2008,2009 Slaven Rezic. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -14,7 +14,7 @@
 
 package XTerm::Conf;
 
-use 5.005; # qr
+use 5.006; # qr, autovivified filehandles
 
 # Plethora of xterm control sequences:
 # http://rtfm.etla.org/xterm/ctlseq.html
@@ -22,7 +22,7 @@ use 5.005; # qr
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 require Exporter;
 @ISA = qw(Exporter);
