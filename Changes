@@ -1,5 +1,8 @@
 Revision history for XTerm-Conf
 
+0.07
+	Addressed RT #46829 (syntax error in xterm-conf)
+
 0.06
 	increased perl prerequisite to 5.006
 
