@@ -15,6 +15,8 @@ WriteMakefile(
     ABSTRACT_FROM       => 'lib/XTerm/Conf.pm',
     ($ExtUtils::MakeMaker::VERSION >= 6.54 ?
 	(META_ADD => { resources => { repository => 'git://github.com/eserte/xterm-conf.git' } }) : ()),
+    ($ExtUtils::MakeMaker::VERSION >= 6.48 ?
+	(MIN_PERL_VERSION => 5.006) : ()),
 );
 
 sub MY::postamble {
