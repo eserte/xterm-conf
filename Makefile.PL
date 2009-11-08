@@ -13,6 +13,8 @@ WriteMakefile(
     },
     AUTHOR              => 'Slaven Rezic <srezic@cpan.org>',
     ABSTRACT_FROM       => 'lib/XTerm/Conf.pm',
+    ($ExtUtils::MakeMaker::VERSION >= 6.54 ?
+	(META_ADD => { resources => { repository => 'git://github.com/eserte/xterm-conf.git' } }) : ()),
 );
 
 sub MY::postamble {
