@@ -1,0 +1,6 @@
+/.prove
+/Makefile
+/Makefile.old
+/XTerm-Conf-*.tar.gz
+/blib
+/pm_to_blib
