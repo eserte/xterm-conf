@@ -20,32 +20,56 @@ BEGIN {
     }
 }
 
+my @xterm_likes = qw(xterm rxvt urxvt);
+
 my $tests = 2;
-plan tests => $tests;
+plan tests => $tests * @xterm_likes;
 
 my(undef,$file) = tempfile(UNLINK => 1);
 
-SKIP: {
-    skip("No xterm and/or DISPLAY on this system available", $tests)
-	if (!is_in_path("xterm") || !$ENV{DISPLAY});
+for my $xterm (@xterm_likes) {
+ SKIP: {
+	skip("No $xterm and/or DISPLAY on this system available", $tests)
+	    if (!is_in_path("$xterm") || !$ENV{DISPLAY});
 
-    system("xterm", "-e", $^X, "-e", q{print STDERR "# xterm can be started\n"});
-    skip("Cannot start xterm", $tests)
-	if $? != 0;
+	system($xterm, "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"});
+	skip("Cannot start $xterm", $tests)
+	    if $? != 0;
 
-    my $xterm_version = `xterm -v`;
-    diag("\nxterm version $xterm_version");
+	if ($xterm eq 'rxvt' || $xterm eq 'urxvt') {
+	    my $rxvt_version;
+	    if ($xterm eq 'rxvt') {
+		my $help_output = `$xterm --help 2>&1`;
+		for my $l (split /\n/, $help_output) {
+		    next if $l eq '';
+		    last if $l =~ m{^rxvt.*options.*command};
+		    $rxvt_version .= $l . "\n";
+		}
+	    } elsif ($xterm eq 'urxvt') {
+		my $help_output = `$xterm --help 2>&1`;
+		for my $l (split /\n/, $help_output) {
+		    next if $l eq '';
+		    last if $l =~ m{^Usage.*urxvt.*options};
+		    $rxvt_version .= $l . "\n";
+		}
+	    }
+	    diag("\n$xterm\n$rxvt_version");
+	} else {
+	    my $xterm_version;
+	    $xterm_version = `$xterm -v`;
+	    diag("\n$xterm version $xterm_version");
+	}
 
-    system("xterm", "-xrm", "*allowWindowOps:true", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file);
+	system($xterm, "-xrm", "*allowWindowOps:true", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file);
+	
+	open FH, "< $file"
+	    or die "Can't open $file: $!";
+	chomp(my $success = join "", <FH>);
+	is($success, "success", "live $xterm tests");
 
-    open FH, "< $file"
-	or die "Can't open $file: $!";
-    chomp(my $success = join "", <FH>);
-    is($success, "success", "live xterm tests");
-
-    system("xterm", "-xrm", "*allowWindowOps:false", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/11-xterm.pl", $file);
-    pass("No hangs if xterm is running with allowWindowOps:false");
-
+	system($xterm, "-xrm", "*allowWindowOps:false", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/11-xterm.pl", $file);
+	pass("No hangs if $xterm is running with allowWindowOps:false");
+    }
 }
 
 # REPO BEGIN
