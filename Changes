@@ -1,5 +1,10 @@
 Revision history for XTerm-Conf
 
+0.07_50
+	Works without -f on rxvt and urxvt.
+	Fixed minor Pod nit.
+	Live tests also with rxvt and urxvt.
+
 0.07
 	Addressed RT #46829 (syntax error in xterm-conf)
 
