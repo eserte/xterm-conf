@@ -1,10 +1,9 @@
 # -*- perl -*-
 
 #
-# $Id: Conf.pm,v 1.17 2009/07/14 05:27:13 eserte Exp $
 # Author: Slaven Rezic
 #
-# Copyright (C) 2006,2008,2009 Slaven Rezic. All rights reserved.
+# Copyright (C) 2006,2008,2009,2012 Slaven Rezic. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -22,7 +21,7 @@ use 5.006; # qr, autovivified filehandles
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.07';
+$VERSION = '0.07_50';
 
 require Exporter;
 @ISA = qw(Exporter);
