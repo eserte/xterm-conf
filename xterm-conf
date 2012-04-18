@@ -25,7 +25,7 @@ xterm-conf - change configuration of a running xterm
 
 =head1 SYNOPSIS
 
-    xterm-conf [-f|force] [options]
+    xterm-conf [-f|-force] [options]
 
 =head1 DESCRIPTION
 
