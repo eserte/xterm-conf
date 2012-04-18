@@ -237,7 +237,7 @@ sub xterm_conf_string {
 
 sub xterm_conf {
     return if !$ENV{TERM};
-    return if $ENV{TERM} !~ m{^xterm};
+    return if $ENV{TERM} !~ m{^(xterm|rxvt)};
     my $rv = xterm_conf_string(@_);
     local $| = 1;
     print $rv;
@@ -337,8 +337,8 @@ XTerm::Conf - change configuration of a running xterm
 =head2 xterm_conf(I<options ...>)
 
 The xterm_conf function (exported by default) checks first if the
-current terminal looks like an xterm (by looking at the C<TERM>
-environment variable) and prints the escape sequences for the
+current terminal looks like an xterm or rxvt (by looking at the
+C<TERM> environment variable) and prints the escape sequences for the
 following options:
 
 =over
@@ -610,6 +610,6 @@ Slaven ReziE<0x107>
 
 =head1 SEE ALSO
 
-L<xterm-conf>, L<xterm(1)>, L<Term::Title>.
+L<xterm-conf>, L<xterm(1)>, L<rxvt(1)>, L<Term::Title>.
 
 =cut
