@@ -21,7 +21,7 @@ use 5.006; # qr, autovivified filehandles
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.07_50';
+$VERSION = '0.08';
 
 require Exporter;
 @ISA = qw(Exporter);

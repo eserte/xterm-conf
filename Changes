@@ -1,5 +1,8 @@
 Revision history for XTerm-Conf
 
+0.08
+	No change to 0.07_50
+
 0.07_50
 	Works without -f on rxvt and urxvt.
 	Fixed minor Pod nit.
