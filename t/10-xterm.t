@@ -32,7 +32,7 @@ for my $xterm (@xterm_likes) {
 	skip("No $xterm and/or DISPLAY on this system available", $tests)
 	    if (!is_in_path("$xterm") || !$ENV{DISPLAY});
 
-	system($xterm, "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"});
+	system($xterm, "-geometry", "+10+10", "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"});
 	skip("Cannot start $xterm", $tests)
 	    if $? != 0;
 
