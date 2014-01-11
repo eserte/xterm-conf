@@ -1,5 +1,9 @@
 Revision history for XTerm-Conf
 
+0.09
+	Addressed a test problem with rxvt on Ubuntu.
+	Some Pod improvements.
+
 0.08
 	No change to 0.07_50
 
