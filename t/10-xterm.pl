@@ -2,10 +2,9 @@
 # -*- perl -*-
 
 #
-# $Id: 10-xterm.pl,v 1.2 2008/09/18 20:48:40 eserte Exp $
 # Author: Slaven Rezic
 #
-# Copyright (C) 2008 Slaven Rezic. All rights reserved.
+# Copyright (C) 2008,2014 Slaven Rezic. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -23,18 +22,30 @@ sub S () { select undef, undef, undef, 0.4 }
 
 my $file = shift;
 
+my $term = $ENV{TERM} || '<unknown>';
+
 print STDERR "Some text for the xterm...\n";
 eval {
     # This test has to be the first one, right after the print above!
     is(xterm_conf_string(-report => 'cursorpos'), "2 1\n", "cursor position");
     
-    xterm_conf(-title => "Title changed");
-    S;
-    is(xterm_conf_string(-report => 'title'), "Title changed\n", "report of title");
+ SKIP: {
+	# On Debian and Ubuntu reporting of
+	# window title and icon label is
+	# "currently disabled due to security concerns"
+	# in their version of rxvt. see source code of command.c,
+	# around line 2826.
+	skip "Some window ops disabled on Debian/Ubuntu", 2
+	    if ($term =~ m{^rxvt} && -e "/etc/debian_version");
 
-    xterm_conf(-iconname => "Iconname changed");
-    S;
-    is(xterm_conf_string(-report => 'iconname'), "Iconname changed\n", "report of iconname");
+	xterm_conf(-title => "Title changed");
+	S;
+	is(xterm_conf_string(-report => 'title'), "Title changed\n", "report of title");
+
+	xterm_conf(-iconname => "Iconname changed");
+	S;
+	is(xterm_conf_string(-report => 'iconname'), "Iconname changed\n", "report of iconname");
+    }
     
     xterm_conf(-fg => 'blue', -bg => 'white',
 	       -title => "Foreground and background colors changed",
