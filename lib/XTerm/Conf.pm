@@ -3,7 +3,7 @@
 #
 # Author: Slaven Rezic
 #
-# Copyright (C) 2006,2008,2009,2012 Slaven Rezic. All rights reserved.
+# Copyright (C) 2006,2008,2009,2012,2014 Slaven Rezic. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -21,7 +21,7 @@ use 5.006; # qr, autovivified filehandles
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 require Exporter;
 @ISA = qw(Exporter);
@@ -333,263 +333,275 @@ XTerm::Conf - change configuration of a running xterm
 
 =head1 DESCRIPTION
 
+XTerm::Conf provides functions to change some aspects of a running
+L<xterm> and compatible terminal emulators (e.g. L<rxvt> or L<urxvt>).
+
 =head2 xterm_conf(I<options ...>)
 
 The xterm_conf function (exported by default) checks first if the
-current terminal looks like an xterm or rxvt (by looking at the
+current terminal looks like an xterm, rxvt or urxvt (by looking at the
 C<TERM> environment variable) and prints the escape sequences for the
 following options:
 
 =over
 
-=item -n string
+=item C<-n I<string>>
 
-=item -iconname string
+=item C<-iconname I<string>>
 
 Change name of the associated X11 icon.
 
-=item -T string
+=item C<-T I<string>>
 
-=item -title string
+=item C<-title I<string>>
 
 Change xterm's title name.
 
-=item -fg color
+=item C<-fg I<color>>
 
-=item -foreground color
+=item C<-foreground I<color>>
 
 Change text color. You can use either X11 named colors or the
-#rrggbb notation.
+C<#I<rrggbb>> notation.
 
-=item -bg color
+=item C<-bg I<color>>
 
-=item -background color
+=item C<-background I<color>>
 
-Change background color
+Change background color.
 
-=item -cr ...
+=item C<-cr I<color>>
 
-=item -textcursor ...
+=item C<-textcursor I<color>>
 
-Change cursor color
+Change cursor color.
 
-=item -ms color
+=item C<-ms I<color>>
 
-=item -mousefg color
+=item C<-mousefg I<color>>
 
-=item -mouseforeground color
+=item C<-mouseforeground I<color>>
 
 Change the foreground color of the mouse pointer.
 
-=item -mousebg color
+=item C<-mousebg I<color>>
 
-=item -mousebackground color
+=item C<-mousebackground I<color>>
 
 Change the background/border color of the mouse pointer.
 
-=item -tekfg color
+=item C<-tekfg I<color>>
 
-=item -tekforeground color
+=item C<-tekforeground I<color>>
 
 Change foreground color of Tek window.
 
-=item -tekbg color
+=item C<-tekbg I<color>>
 
-=item -tekbackground color
+=item C<-tekbackground I<color>>
 
 Change background color of Tek window.
 
-=item -highlightcolor color
+=item C<-highlightcolor I<color>>
 
 Change selection background color.
 
-=item -bell
+=item C<-bell>
 
-Ring the bell (either visual or audible)
+Ring the bell (may be visual or audible, depending on configuration).
 
-=item -cs utf-8|iso-8859-1
+=item C<-cs utf-8|iso-8859-1>
 
 Switch charset. Valid values are C<utf-8> and C<iso-8859-1>.
 
-=item -fullreset
+=item C<-fullreset>
 
 Perform a full reset.
 
-=item -softreset
+=item C<-softreset>
 
 Perform a soft reset.
 
-=item -[no]smoothscroll
+=item C<-[no]smoothscroll>
 
 Turn smooth scrolling on or off (which is probably the opposite of
 jump scroll, see L<xterm(1)>).
 
-=item -[no]reverse
+=item C<-[no]reverse>
 
-=item -[no]reversevideo
+=item C<-[no]reversevideo>
 
 Turn reverse video on or off.
 
-=item -[no]origin
+=item C<-[no]origin>
 
 ???
 
-=item -[no]wraparound
+=item C<-[no]wraparound>
 
 ???
 
-=item -[no]autorepeat
+=item C<-[no]autorepeat>
 
-Turn auto repeat on or off
+Turn auto repeat on or off.
 
-=item -[no]formfeed
+=item C<-[no]formfeed>
 
 ???
 
-=item -[no]showcursor
+=item C<-[no]showcursor>
 
 Show or hide the cursor.
 
-=item -[no]showscrollbar
+=item C<-[no]showscrollbar>
 
 rxvt only?
 
-=item -[no]tektronix
+=item C<-[no]tektronix>
 
-Show the Tek window and switch to Tek mode (XXX -notektronix does not
+Show the Tek window and switch to Tek mode (XXX C<-notektronix> does not
 seem to work).
 
-=item -[no]marginbell
+=item C<-[no]marginbell>
 
 ???
 
-=item -[no]reversewraparound
+=item C<-[no]reversewraparound>
 
 ???
 
-=item -[no]backsendsdelete
+=item C<-[no]backsendsdelete>
 
 ???
 
-=item -[no]bottomscrolltty
+=item C<-[no]bottomscrolltty>
 
 rxvt only?
 
-=item -[no]bottomscrollkey
+=item C<-[no]bottomscrollkey>
 
 rxvt only?
 
-=item -[no]metasendsesc
+=item C<-[no]metasendsesc>
 
-=item -[no]metasendsescape
-
-???
-
-=item -scrollregion ...
+=item C<-[no]metasendsescape>
 
 ???
 
-=item -deiconify
+=item C<-scrollregion I<...>>
+
+???
+
+=item C<-deiconify>
 
 Deiconify an iconified xterm window.
 
-=item -iconify
+=item C<-iconify>
 
 Iconify the xterm window.
 
-=item -geometry geomtry
+=item C<-geometry I<geometry>>
 
 Change the geometry of the xterm window. The geometry is in the usual
 X11 notation I<width>xI<height>+I<left>+I<top>. The numbers are in
 pixels. The width and height may be suffixed with a C<c>, which means
-that the number are interpreted as characters.
+that the numbers are interpreted as characters.
 
-=item -raise
+=item C<-raise>
 
 Raise the xterm window.
 
-=item -lower
+=item C<-lower>
 
 Lower the xterm window
 
-=item -refresh
+=item C<-refresh>
 
-=item -x11refresh
+=item C<-x11refresh>
 
-Force a X11 refresh
+Force a X11 refresh.
 
-=item -maximize
+=item C<-maximize>
 
-Maximize the xterm window
+Maximize the xterm window.
 
-=item -unmaximize
+=item C<-unmaximize>
 
 Restore to the state before maximization.
 
-=item -xproperty ...
+=item C<-xproperty I<...>>
 
-=item -x11property ...
+=item C<-x11property I<...>>
 
 ???
 
-=item -font number
+=item C<-font I<number>>
 
 Change font. Number may be from 0 (default font) to 6 (usually the
 largest font, but this could be changed using Xdefaults).
 
-=item -nextfont
+=item C<-nextfont>
 
 Use the next font in list.
 
-=item -prevfont
+=item C<-prevfont>
 
-Use the previous font in ilist.
+Use the previous font in list.
 
-=item -report what
+=item C<-report I<what>>
 
-Report to STDOUT:
+Report to C<STDOUT>:
 
 =over
 
-=item status
+=item C<status>
 
-???
+Return 1.
 
-=item cursorpos
+=item C<cursorpos>
 
 The cursor position (I<line column>).
 
-=item windowpos
+=item C<windowpos>
 
 The XTerm window position (I<x y>).
 
-=item geometry
+=item C<geometry>
 
 The geometry of the window in pixels (I<width> I<height>).
 
-=item cgeometry
+=item C<cgeometry>
 
 The geometry of the window in characters (I<width>C<x>I<height>).
 
-=item cscreengeom
+=item C<cscreengeom>
 
 ???
 
-=item iconname
+=item C<iconname>
 
-The icon name.
+The icon name. This may only be available if the allowWindowOps
+resource is set to true (e.g. using
 
-=item title
+    xterm -xrm "*allowWindowOps:true"
 
-The title name.
+). On some operating systems and some terminal emulators (most notable
+C<rxvt> on Debian/Ubuntu systems) this operation may be forbidden
+completely.
+
+=item C<title>
+
+The title name. See L</iconname> for possible restrictions on
+availability.
 
 =back
 
-=item -debugreport
+=item C<-debugreport>
 
-???
+If set together with a C<-report ...> option, then print the returned
+escape sequence as numbers to C<STDOUT> (as an debugging aid).
 
-=item -resize integer
+=item C<-resize I<integer>>
 
 ???
 
