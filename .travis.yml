@@ -6,6 +6,8 @@ before_install:
  - '[ "$WITH_X11" = "yes" ] && (sleep 10; env DISPLAY=:123 twm) &'
 matrix:
  include:
+  - perl: "5.20"
+    env: DISPLAY=:123 WITH_X11=yes
   - perl: "5.18"
     env: WITH_X11=no
   - perl: "5.18"
