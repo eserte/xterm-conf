@@ -1,5 +1,12 @@
 Revision history for XTerm-Conf
 
+0.09_50
+	New function terminal_is_supported.
+	New xterm-conf option --is-supported.
+	Improved Pod, added EXAMPLES section.
+	Option check is done also for unsupported terminals.
+	More tests.
+
 0.09
 	Addressed a test problem with rxvt on Ubuntu.
 	Some Pod improvements.
