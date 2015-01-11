@@ -4,7 +4,7 @@
 #
 # Author: Slaven Rezic
 #
-# Copyright (C) 2008,2014 Slaven Rezic. All rights reserved.
+# Copyright (C) 2008,2014,2015 Slaven Rezic. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -28,7 +28,8 @@ print STDERR "Some text for the xterm...\n";
 eval {
     # This test has to be the first one, right after the print above!
     is(xterm_conf_string(-report => 'cursorpos'), "2 1\n", "cursor position");
-    
+
+    ok XTerm::Conf::terminal_is_supported(), "Current terminal '$term' is supported";
  SKIP: {
 	# On Debian and Ubuntu reporting of
 	# window title and icon label is

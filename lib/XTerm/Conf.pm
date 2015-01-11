@@ -3,7 +3,7 @@
 #
 # Author: Slaven Rezic
 #
-# Copyright (C) 2006,2008,2009,2012,2014 Slaven Rezic. All rights reserved.
+# Copyright (C) 2006,2008,2009,2012,2014,2015 Slaven Rezic. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -21,12 +21,12 @@ use 5.006; # qr, autovivified filehandles
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.09';
+$VERSION = '0.09_50';
 
 require Exporter;
 @ISA = qw(Exporter);
 @EXPORT    = qw(xterm_conf);
-@EXPORT_OK = qw(xterm_conf_string);
+@EXPORT_OK = qw(xterm_conf_string terminal_is_supported);
 
 use Getopt::Long 2.24; # OO interface
 
@@ -235,11 +235,24 @@ sub xterm_conf_string {
 }
 
 sub xterm_conf {
-    return if !$ENV{TERM};
-    return if $ENV{TERM} !~ m{^(xterm|rxvt)};
+    # always call xterm_conf_string(), so option validation is done
     my $rv = xterm_conf_string(@_);
-    local $| = 1;
-    print $rv;
+    if (terminal_is_supported()) {
+	local $| = 1;
+	print $rv;
+    }
+}
+
+sub terminal_is_supported {
+    my($term) = @_;
+    $term = $ENV{TERM} if !defined $term;
+    if (!$ENV{TERM}) {
+	0;
+    } elsif ($ENV{TERM} !~ m{^(xterm|rxvt)}) {
+	0;
+    } else {
+	1;
+    }
 }
 
 sub _report ($$) {
@@ -614,6 +627,13 @@ the given options (same as in xterm_conf). No terminal check will be
 performed here.
 
 xterm_conf_string may be exported.
+
+=head2 terminal_is_supported(I<term>)
+
+Return a true value if the given I<term>, or if missing, the current
+terminal as given by C<$ENV{TERM}>, is supported.
+
+This function may be exported.
 
 =head1 AUTHOR
 
