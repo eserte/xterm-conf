@@ -1,5 +1,9 @@
 Revision history for XTerm-Conf
 
+0.09_51
+	Internal improvement: no more END{} block resetting
+	the terminal mode.
+
 0.09_50
 	New function terminal_is_supported.
 	New xterm-conf option --is-supported.
