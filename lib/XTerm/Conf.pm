@@ -21,7 +21,7 @@ use 5.006; # qr, autovivified filehandles
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.09_50';
+$VERSION = '0.09_51';
 
 require Exporter;
 @ISA = qw(Exporter);
@@ -73,7 +73,6 @@ sub xterm_conf_string {
     local @ARGV = @_;
 
     %o = ();
-    $need_reset_terminal++;
 
     my $p = Getopt::Long::Parser->new;
     $p->configure('no_ignore_case');
@@ -261,30 +260,35 @@ sub _report ($$) {
     require Term::ReadKey;
     Term::ReadKey::ReadMode(5);
 
-    require IO::Select;
-
-    my $debug = $o{debugreport};
-
-    open my $TTY, "+< /dev/tty" or die "Cannot open terminal /dev/tty: $!";
-    syswrite $TTY, $cmd;
-
-    my $sel = IO::Select->new;
-    $sel->add($TTY);
-
-    my $res = "";
     my @args;
-    my $err;
-    while() {
-	my(@ready) = $sel->can_read(5);
-	if (!@ready) {
-	    $err = "Cannot report, maybe allowWindowOps is set to false?";
-	    last;
+
+    eval {
+	require IO::Select;
+
+	my $debug = $o{debugreport};
+
+	open my $TTY, "+< /dev/tty" or die "Cannot open terminal /dev/tty: $!";
+	syswrite $TTY, $cmd;
+
+	my $sel = IO::Select->new;
+	$sel->add($TTY);
+
+	my $res = "";
+	while() {
+	    my(@ready) = $sel->can_read(5);
+	    if (!@ready) {
+		die "Cannot report, maybe allowWindowOps is set to false?";
+		last;
+	    }
+	    sysread $TTY, my $ch, 1 or die "Cannot sysread: $!";
+	    print STDERR ord($ch)." " if $debug;
+	    $res .= $ch;
+	    last if (@args = $res =~ $rx);
 	}
-	sysread $TTY, my $ch, 1 or die "Cannot sysread: $!";
-	print STDERR ord($ch)." " if $debug;
-	$res .= $ch;
-	last if (@args = $res =~ $rx);
-    }
+
+	1;
+    };
+    my $err = $@;
 
     Term::ReadKey::ReadMode(0);
 
@@ -322,11 +326,6 @@ usage: $0 [-n|iconname string] [-T|title string] [-cr|textcursor color]
 	[-report ...] [-debugreport] [-resize ...]
 
 EOF
-}
-
-END {
-    Term::ReadKey::ReadMode(0)
-	    if $need_reset_terminal && defined &Term::ReadKey::ReadMode;
 }
 
 return 1 if caller;
