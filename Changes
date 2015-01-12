@@ -1,5 +1,8 @@
 Revision history for XTerm-Conf
 
+0.10
+	Stable release with all changes in 0.09_50..0.09_51.
+
 0.09_51
 	Internal improvement: no more END{} block resetting
 	the terminal mode.
