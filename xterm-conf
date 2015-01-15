@@ -65,7 +65,7 @@ Change the title, foreground and background colors of the running xterm:
 If running a C<screen> or C<tmux> in an C<xterm>, then the C<--force>
 switch has to be used because of the different C<TERM> value:
 
-    xter-conf --force --title "The new xterm title" --fg black --bg white
+    xterm-conf --force --title "The new xterm title" --fg black --bg white
 
 =head1 AUTHOR
 
