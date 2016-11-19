@@ -1,11 +1,8 @@
 language: perl
-before_install:
- - '[ "$WITH_X11" = "yes" ] && sudo apt-get update -qq || true'
- - '[ "$WITH_X11" = "yes" ] && sudo apt-get install -qq xvfb twm xterm rxvt rxvt-unicode || true'
- - '[ "$WITH_X11" = "yes" ] && Xvfb :123 &'
- - '[ "$WITH_X11" = "yes" ] && (sleep 10; env DISPLAY=:123 twm) &'
 matrix:
  include:
+  - perl: "5.22"
+    env: DISPLAY=:123 WITH_X11=yes
   - perl: "5.20"
     env: DISPLAY=:123 WITH_X11=yes
   - perl: "5.18"
@@ -22,3 +19,13 @@ matrix:
     env: DISPLAY=:123 WITH_X11=yes
   - perl: "5.8"
     env: DISPLAY=:123 WITH_X11=yes
+
+before_install:
+ - '[ "$WITH_X11" = "yes" ] && sudo apt-get update -qq || true'
+ - '[ "$WITH_X11" = "yes" ] && sudo apt-get install -qq xvfb twm xterm rxvt rxvt-unicode || true'
+ - '[ "$WITH_X11" = "yes" ] && Xvfb :123 &'
+ - '[ "$WITH_X11" = "yes" ] && (sleep 10; env DISPLAY=:123 twm) &'
+
+branches:
+ except:
+  - /appveyor/
