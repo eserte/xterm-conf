@@ -23,7 +23,7 @@ matrix:
 before_install:
  - '[ "$WITH_X11" = "yes" ] && sudo apt-get update -qq || true'
  - '[ "$WITH_X11" = "yes" ] && sudo apt-get install -qq xvfb twm xterm rxvt rxvt-unicode || true'
- - '[ "$WITH_X11" = "yes" ] && Xvfb :123 &'
+ - '[ "$WITH_X11" = "yes" ] && Xvfb :123 2>/dev/null &'
  - '[ "$WITH_X11" = "yes" ] && (sleep 10; env DISPLAY=:123 twm) &'
 
 branches:
