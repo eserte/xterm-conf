@@ -32,8 +32,8 @@ addons:
    - rxvt-unicode
 
 script:
- - '[ "$WITH_X11" = "yes" ] && (perl Makefile.PL && env HARNESS_TIMER=1 xvfb-run --auto-servernum make test) || true'
- - '[ "$WITH_X11" = ""    ] && (perl Makefile.PL && env HARNESS_TIMER=1                           make test) || true'
+ - 'if [ "$WITH_X11" = "yes" ]; then perl Makefile.PL && env HARNESS_TIMER=1 xvfb-run --auto-servernum make test; fi'
+ - 'if [ "$WITH_X11" = "no"  ]; then perl Makefile.PL && env HARNESS_TIMER=1                           make test; fi'
 
 sudo: true
 
