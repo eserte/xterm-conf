@@ -22,7 +22,7 @@ BEGIN {
 
 my @xterm_likes = qw(xterm rxvt urxvt);
 
-my $tests = 2;
+my $tests = 3;
 plan tests => $tests * @xterm_likes;
 
 my(undef,$file) = tempfile(UNLINK => 1);
@@ -67,8 +67,30 @@ for my $xterm (@xterm_likes) {
 	chomp(my $success = join "", <FH>);
 	is($success, "success", "live $xterm tests");
 
-	system($xterm, "-xrm", "*allowWindowOps:false", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/11-xterm.pl", $file);
-	pass("No hangs if $xterm is running with allowWindowOps:false");
+	{
+	    my @cmd = ($xterm, "-xrm", "*allowWindowOps:false", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/11-xterm.pl", $file);
+	    my $pid = fork;
+	    if (!defined $pid) {
+		die "Can't fork: $!";
+	    }
+	    if ($pid == 0) {
+		exec @cmd;
+		die $!;
+	    }
+	    local $SIG{ALRM} = sub { die "Timeout" };
+	    alarm(30);
+	    eval {
+		waitpid $pid, 0;
+	    };
+	    alarm(0);
+	    is $@, '', "No hangs if $xterm is running with allowWindowOps:false"
+		or diag "Command was '@cmd'";
+	    is $?, 0, 'exit code is success'
+		or diag "Command was '@cmd'";
+	    if ($@) {
+		kill 9 => $pid;
+	    }
+	}
     }
 }
 
