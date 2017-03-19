@@ -23,13 +23,19 @@ matrix:
   - perl: "5.8"
     env: DISPLAY=:123 WITH_X11=yes
 
-before_install:
- - '[ "$WITH_X11" = "yes" ] && sudo apt-get update -qq || true'
- - '[ "$WITH_X11" = "yes" ] && sudo apt-get install -qq xvfb xterm rxvt rxvt-unicode || true'
+addons:
+ apt:
+  packages:
+   - xvfb
+   - xterm
+   - rxvt
+   - rxvt-unicode
 
 script:
  - '[ "$WITH_X11" = "yes" ] && (perl Makefile.PL && env HARNESS_TIMER=1 xvfb-run --auto-servernum make test) || true'
  - '[ "$WITH_X11" = ""    ] && (perl Makefile.PL && env HARNESS_TIMER=1                           make test) || true'
+
+sudo: true
 
 branches:
  except:
