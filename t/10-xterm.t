@@ -31,7 +31,36 @@ for my $xterm (@xterm_likes) {
 	skip("No $xterm and/or DISPLAY on this system available", $tests)
 	    if (!is_in_path("$xterm") || !$ENV{DISPLAY});
 
-	system($xterm, "-geometry", "+10+10", "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"});
+	my $run_xterm_cmd = sub (\@$;$) {
+	    my($cmd, $testlabel, $run_tests) = @_;
+	    $run_tests = 1 if !defined $run_tests;
+
+	    my $pid = fork;
+	    if (!defined $pid) {
+		die "Can't fork: $!";
+	    }
+	    if ($pid == 0) {
+		exec @$cmd;
+		die $!;
+	    }
+	    local $SIG{ALRM} = sub { die "Timeout" };
+	    alarm(30);
+	    eval {
+		waitpid $pid, 0;
+	    };
+	    alarm(0);
+	    if ($run_tests) {
+		is $@, '', "No hangs if $xterm is running with $testlabel"
+		    or diag "Command was '@$cmd'";
+		is $?, 0, 'exit code is success'
+		    or diag "Command was '@$cmd'";
+	    }
+	    if ($@) {
+		kill 9 => $pid;
+	    }
+	};
+
+	$run_xterm_cmd->([$xterm, "-geometry", "+10+10", "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"}], undef, 0);
 	skip("Cannot start $xterm", $tests)
 	    if $? != 0;
 
@@ -58,32 +87,6 @@ for my $xterm (@xterm_likes) {
 	    $xterm_version = `$xterm -v`;
 	    diag("\n$xterm version $xterm_version");
 	}
-
-	my $run_xterm_cmd = sub (\@$) {
-	    my($cmd, $testlabel) = @_;
-
-	    my $pid = fork;
-	    if (!defined $pid) {
-		die "Can't fork: $!";
-	    }
-	    if ($pid == 0) {
-		exec @$cmd;
-		die $!;
-	    }
-	    local $SIG{ALRM} = sub { die "Timeout" };
-	    alarm(30);
-	    eval {
-		waitpid $pid, 0;
-	    };
-	    alarm(0);
-	    is $@, '', "No hangs if $xterm is running with $testlabel"
-		or diag "Command was '@$cmd'";
-	    is $?, 0, 'exit code is success'
-		or diag "Command was '@$cmd'";
-	    if ($@) {
-		kill 9 => $pid;
-	    }
-	};
 
 	$run_xterm_cmd->([$xterm, "-xrm", "*allowWindowOps:true", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file], 'allowWindowOps:true');
 	
