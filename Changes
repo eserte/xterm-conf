@@ -1,5 +1,8 @@
 Revision history for XTerm-Conf
 
+0.11	2017-04-06
+	Pod typos and test fixes (mainly timeout issues)
+
 0.10
 	Stable release with all changes in 0.09_50..0.09_51.
 

@@ -3,7 +3,7 @@
 #
 # Author: Slaven Rezic
 #
-# Copyright (C) 2006,2008,2009,2012,2014,2015 Slaven Rezic. All rights reserved.
+# Copyright (C) 2006,2008,2009,2012,2014,2015,2017 Slaven Rezic. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -21,7 +21,7 @@ use 5.006; # qr, autovivified filehandles
 use strict;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 require Exporter;
 @ISA = qw(Exporter);
