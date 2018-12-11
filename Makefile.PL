@@ -17,6 +17,7 @@ EOF
 WriteMakefile(
     NAME                => 'XTerm::Conf',
     VERSION_FROM        => 'lib/XTerm/Conf.pm',
+    LICENSE             => 'perl_5',
     EXE_FILES           => ['xterm-conf'],
     PREREQ_PM		=> {
 	'Getopt::Long'  => 2.24,
