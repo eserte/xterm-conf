@@ -27,6 +27,7 @@ addons:
  apt:
   packages:
    - xvfb
+   - xfonts-base
    - xterm
    - rxvt
    - rxvt-unicode
