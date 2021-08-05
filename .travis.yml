@@ -1,27 +1,41 @@
 language: perl
+arch:
+ - arm64
 matrix:
  include:
-  - perl: "5.26"
+  - dist: xenial
+    perl: 5.24
+  - dist: bionic
+    perl: 5.26
     env: DISPLAY=:123 WITH_X11=yes
-  - perl: "5.22"
-    env: DISPLAY=:123 WITH_X11=yes
-  - perl: "5.20"
-    env: WITH_X11=no
-  - perl: "5.18"
+  - dist: focal
+    perl: 5.32
+  - dist: focal
+    perl: 5.32
     env: DISPLAY=:123 WITH_X11=yes USE_SYSTEM_PERL
-  - perl: "5.18"
-    env: DISPLAY=:123 WITH_X11=yes
-    dist: trusty
-  - perl: "5.16"
-    env: DISPLAY=:123 WITH_X11=yes
-  - perl: "5.14"
-    env: DISPLAY=:123 WITH_X11=yes
-  - perl: "5.12"
-    env: DISPLAY=:123 WITH_X11=yes
-  - perl: "5.10"
-    env: DISPLAY=:123 WITH_X11=yes
-  - perl: "5.8"
-    env: DISPLAY=:123 WITH_X11=yes
+#matrix:
+# include:
+#  - perl: "5.26"
+#    env: DISPLAY=:123 WITH_X11=yes
+#  - perl: "5.22"
+#    env: DISPLAY=:123 WITH_X11=yes
+#  - perl: "5.20"
+#    env: WITH_X11=no
+#  - perl: "5.18"
+#    env: DISPLAY=:123 WITH_X11=yes USE_SYSTEM_PERL
+#  - perl: "5.18"
+#    env: DISPLAY=:123 WITH_X11=yes
+#    dist: trusty
+#  - perl: "5.16"
+#    env: DISPLAY=:123 WITH_X11=yes
+#  - perl: "5.14"
+#    env: DISPLAY=:123 WITH_X11=yes
+#  - perl: "5.12"
+#    env: DISPLAY=:123 WITH_X11=yes
+#  - perl: "5.10"
+#    env: DISPLAY=:123 WITH_X11=yes
+#  - perl: "5.8"
+#    env: DISPLAY=:123 WITH_X11=yes
 
 addons:
  apt:
@@ -43,3 +57,5 @@ script:
 branches:
  except:
   - /appveyor/
+  - /github-actions/
+  - /doozer/
