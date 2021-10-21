@@ -11,8 +11,8 @@ matrix:
   - dist: focal
     perl: 5.32
   - dist: focal
-    perl: 5.32
-    env: DISPLAY=:123 WITH_X11=yes USE_SYSTEM_PERL
+    env: DISPLAY=:123 WITH_X11=yes USE_SYSTEM_PERL=1
+    language: minimal
 #matrix:
 # include:
 #  - perl: "5.26"
@@ -47,7 +47,7 @@ addons:
    - rxvt-unicode
 
 before_install:
- - if [ "$USE_SYSTEM_PERL" = 1 ]; then perlbrew off; fi
+ - 'if [ "$USE_SYSTEM_PERL" = "1" ]; then sudo apt-get -y install libterm-readkey-perl; fi'
 
 script:
  - export HARNESS_OPTIONS=j4:c HARNESS_TIMER=1
