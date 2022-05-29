@@ -36,6 +36,35 @@ for my $xterm (@xterm_likes) {
 	skip("No $xterm and/or DISPLAY on this system available", $tests)
 	    if (!is_in_path("$xterm") || !$ENV{DISPLAY});
 
+	if ($xterm eq 'rxvt' || $xterm eq 'urxvt') {
+	    my $rxvt_version;
+	    if ($xterm eq 'rxvt') {
+		my $help_output = `$xterm --help 2>&1`;
+		for my $l (split /\n/, $help_output) {
+		    next if $l eq '';
+		    last if $l =~ m{^(Usage.*)?rxvt.*options.*command};
+		    $rxvt_version .= $l . "\n";
+		}
+		if (open my $fh, "/etc/os-release") {
+		    if (grep { /VERSION_CODENAME=stretch/ } <$fh>) {
+			skip("rxvt on debian/stretch may hang", $tests);
+		    }
+		}
+	    } elsif ($xterm eq 'urxvt') {
+		my $help_output = `$xterm --help 2>&1`;
+		for my $l (split /\n/, $help_output) {
+		    next if $l eq '';
+		    last if $l =~ m{^Usage.*urxvt.*options};
+		    $rxvt_version .= $l . "\n";
+		}
+	    }
+	    diag("\n$xterm\n$rxvt_version");
+	} else {
+	    my $xterm_version;
+	    $xterm_version = `$xterm -v`;
+	    diag("\n$xterm version $xterm_version");
+	}
+
 	my $run_xterm_cmd = sub (\@$;$) {
 	    my($cmd, $testlabel, $run_tests) = @_;
 	    $run_tests = 1 if !defined $run_tests;
@@ -71,30 +100,6 @@ for my $xterm (@xterm_likes) {
 	$run_xterm_cmd->([$xterm, "-geometry", "+10+10", "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"}], 'no special options', 0);
 	skip("Cannot start $xterm", $tests)
 	    if $? != 0;
-
-	if ($xterm eq 'rxvt' || $xterm eq 'urxvt') {
-	    my $rxvt_version;
-	    if ($xterm eq 'rxvt') {
-		my $help_output = `$xterm --help 2>&1`;
-		for my $l (split /\n/, $help_output) {
-		    next if $l eq '';
-		    last if $l =~ m{^rxvt.*options.*command};
-		    $rxvt_version .= $l . "\n";
-		}
-	    } elsif ($xterm eq 'urxvt') {
-		my $help_output = `$xterm --help 2>&1`;
-		for my $l (split /\n/, $help_output) {
-		    next if $l eq '';
-		    last if $l =~ m{^Usage.*urxvt.*options};
-		    $rxvt_version .= $l . "\n";
-		}
-	    }
-	    diag("\n$xterm\n$rxvt_version");
-	} else {
-	    my $xterm_version;
-	    $xterm_version = `$xterm -v`;
-	    diag("\n$xterm version $xterm_version");
-	}
 
 	$run_xterm_cmd->([$xterm, "-xrm", "*allowWindowOps:true", "-T", "XTerm::Conf test suite", "-geometry", "+10+10", "-e", $^X, "$FindBin::RealBin/10-xterm.pl", $file], 'allowWindowOps:true');
 	
