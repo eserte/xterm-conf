@@ -19,6 +19,11 @@ BEGIN {
     }
 }
 
+BEGIN {
+    eval 'use Time::HiRes qw(time)';
+    warn "Can't use hires time(): $@, continue with lores version" if $@;
+}
+
 my @xterm_likes = qw(xterm rxvt urxvt);
 
 my $tests = 5;
@@ -35,6 +40,7 @@ for my $xterm (@xterm_likes) {
 	    my($cmd, $testlabel, $run_tests) = @_;
 	    $run_tests = 1 if !defined $run_tests;
 
+	    my $t0 = time;
 	    my $pid = fork;
 	    if (!defined $pid) {
 		die "Can't fork: $!";
@@ -49,6 +55,7 @@ for my $xterm (@xterm_likes) {
 		waitpid $pid, 0;
 	    };
 	    alarm(0);
+	    my $t1 = time;
 	    if ($run_tests) {
 		is $@, '', "No hangs if $xterm is running with $testlabel"
 		    or diag "Command was '@$cmd'";
@@ -58,9 +65,10 @@ for my $xterm (@xterm_likes) {
 	    if ($@) {
 		kill 9 => $pid;
 	    }
+	    diag sprintf "Subtest runtime for $xterm $testlabel was %.2f seconds", $t1-$t0;
 	};
 
-	$run_xterm_cmd->([$xterm, "-geometry", "+10+10", "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"}], undef, 0);
+	$run_xterm_cmd->([$xterm, "-geometry", "+10+10", "-e", $^X, "-e", q{print STDERR "# $xterm can be started\n"}], 'no special options', 0);
 	skip("Cannot start $xterm", $tests)
 	    if $? != 0;
 
