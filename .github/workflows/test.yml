@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - '*travis*'
+      - '*appveyor*'
+      - '*doozer*'
+  pull_request:
+
+jobs:
+
+  test_on_host:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+     matrix:
+       include:
+         - os: 'ubuntu-20.04'
+         - os: 'ubuntu-18.04'
+    steps:
+    - name: apt hacks
+      # /etc/apt/sources.list should be sufficient; all the other repositories are possibly problematic
+      run: |
+        sudo rm -f /etc/apt/sources.list.d/*.list
+        sudo apt-get update -qq
+    - uses: actions/checkout@v2
+    - name: Build
+      run: |
+        perl Makefile.PL
+        make distcheck
+    - name: Test without X11
+      run: |
+        HARNESS_TIMER=1 HARNESS_OPTIONS=j4:c make disttest
+    - name: Test with X11
+      run: |
+        sudo apt-get install -q --no-install-recommends xvfb xauth xfonts-base xterm rxvt rxvt-unicode libterm-readkey-perl
+        HARNESS_TIMER=1 HARNESS_OPTIONS=j4:c xvfb-run --auto-servernum make disttest
+
+  test_in_container_dists:
+    name: Container tests with ${{ matrix.dist }}:${{ matrix.distver }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.dist }}:${{ matrix.distver }}
+    strategy:
+      matrix:
+        include:
+          - dist:    debian
+            distver: jessie
+          - dist:    debian
+            distver: stretch
+          - dist:    debian
+            distver: buster
+          - dist:    debian
+            distver: bullseye
+          - dist:    ubuntu
+            distver: 16.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install X11 stuff on Debian
+      run: |
+        set -e
+        apt-get update -qq
+        apt-get install -q --no-install-recommends -y make xvfb xauth xfonts-base xterm rxvt rxvt-unicode libterm-readkey-perl
+    - name: Build and test
+      run: |
+        set -e
+        perl Makefile.PL
+        make distcheck
+        HARNESS_TIMER=1 HARNESS_OPTIONS=j4:c xvfb-run --auto-servernum make disttest
