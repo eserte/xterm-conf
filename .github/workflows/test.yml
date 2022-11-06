@@ -34,7 +34,7 @@ jobs:
         HARNESS_TIMER=1 HARNESS_OPTIONS=j4:c make disttest
     - name: Test with X11
       run: |
-        sudo apt-get install -q --no-install-recommends xvfb xauth xfonts-base xterm rxvt rxvt-unicode libterm-readkey-perl
+        sudo apt-get install -q --no-install-recommends xvfb xauth xfonts-base xterm rxvt-unicode libterm-readkey-perl
         HARNESS_TIMER=1 HARNESS_OPTIONS=j4:c xvfb-run --auto-servernum make disttest
 
   test_in_container_dists:
@@ -60,7 +60,7 @@ jobs:
       run: |
         set -e
         apt-get update -qq
-        apt-get install -q --no-install-recommends -y make xvfb xauth xfonts-base xterm rxvt rxvt-unicode libterm-readkey-perl
+        apt-get install -q --no-install-recommends -y make xvfb xauth xfonts-base xterm rxvt-unicode libterm-readkey-perl
     - name: Build and test
       run: |
         set -e
