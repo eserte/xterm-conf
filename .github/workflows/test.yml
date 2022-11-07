@@ -24,7 +24,7 @@ jobs:
       run: |
         sudo rm -f /etc/apt/sources.list.d/*.list
         sudo apt-get update -qq
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Build
       run: |
         perl Makefile.PL
@@ -55,7 +55,7 @@ jobs:
           - dist:    ubuntu
             distver: 16.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Install X11 stuff on Debian
       run: |
         set -e
