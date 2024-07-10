@@ -18,6 +18,7 @@ jobs:
        include:
          - os: 'ubuntu-20.04'
          - os: 'ubuntu-22.04'
+         - os: 'ubuntu-24.04'
     steps:
     - name: apt hacks
       # /etc/apt/sources.list should be sufficient; all the other repositories are possibly problematic
