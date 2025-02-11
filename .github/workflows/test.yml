@@ -16,7 +16,6 @@ jobs:
     strategy:
      matrix:
        include:
-         - os: 'ubuntu-20.04'
          - os: 'ubuntu-22.04'
          - os: 'ubuntu-24.04'
     steps:
@@ -55,6 +54,10 @@ jobs:
             distver: bullseye
           - dist:    ubuntu
             distver: 16.04
+          - dist:    ubuntu
+            distver: 20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
     steps:
     - name: apt hacks
       run: |
