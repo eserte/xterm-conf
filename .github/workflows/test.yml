@@ -19,6 +19,7 @@ jobs:
        include:
          - os: 'ubuntu-22.04'
          - os: 'ubuntu-24.04'
+         - os: 'ubuntu-26.04'
     steps:
     - name: apt hacks
       # /etc/apt/sources.list should be sufficient; all the other repositories are possibly problematic
@@ -52,7 +53,7 @@ jobs:
           - dist:    debian
             distver: buster
           - dist:    debian
-            distver: bullseye
+            distver: trixie
           - dist:    ubuntu
             distver: 16.04
           - dist:    ubuntu
